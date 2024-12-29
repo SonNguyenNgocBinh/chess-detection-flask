@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Piece Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Chess Piece Classifier</h1>
+    <form id="upload-form" class="file-upload-form" method="POST" enctype="multipart/form-data">
+        <label for="file" class="file-upload-label">
+            <div class="file-upload-design">
+                <svg viewBox="0 0 640 512" height="1em">
+                    <path
+                        d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z">
+                    </path>
+                </svg>
+                <p>Upload or Drag Image</p>
+            </div>
+            <input id="file" name="file" type="file" accept="image/*" capture="environment" style="display: none;" />
+        </label>
+
+        <div id="image-preview-container">
+            <img id="image-preview" style="display:none; max-width:100%; height:auto;" />
+        </div>
+        <div id="result">
+            <!-- Prediction will be displayed here -->
+        </div>
+        <div>
+            <button class="upload-button" type="submit">Check</button>
+        </div>
+    </form>
+
+    
+
+    <script>
+        // Handle drag-and-drop functionality
+        const form = document.getElementById('upload-form');
+        const fileInput = document.getElementById('file');
+        const resultDiv = document.getElementById('result');
+
+        // Add event listeners for drag-and-drop
+        window.addEventListener('dragover', (event) => {
+            event.preventDefault(); // Prevent default behavior (e.g., navigating the file)
+            event.dataTransfer.dropEffect = 'copy'; // Indicate the copy action
+        });
+
+        window.addEventListener('drop', (event) => {
+            event.preventDefault(); // Prevent default drop behavior
+            const files = event.dataTransfer.files;
+            
+            // Only process if files are dropped
+            if (files.length > 0) {
+                const file = files[0]; // Get the first file (can be extended for multiple files)
+                if (file.type.startsWith('image/')) {
+                    // Simulate selecting the file using the input
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    fileInput.files = dataTransfer.files;
+
+                    // Trigger preview update
+                    previewImage(fileInput);
+                } else {
+                    resultDiv.textContent = 'Please drop a valid image file.';
+                }
+            }
+        });
+
+        // Preview the image
+        fileInput.addEventListener('change', () => {
+            previewImage(fileInput);
+        });
+
+        function previewImage(input) {
+            const preview = document.getElementById('image-preview');
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Form submission remains the same
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.prediction) {
+                    resultDiv.textContent = `Prediction: ${data.prediction}`;
+                } else if (data.error) {
+                    resultDiv.textContent = `Error: ${data.error}`;
+                }
+            } catch (error) {
+                resultDiv.textContent = 'An error occurred!';
+            }
+        });
+    </script>    
+</body>
+</html>

@@ -1,0 +1,168 @@
+.merriweather-light {
+    font-family: "Merriweather", serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Hide the default file input */
+
+#file {
+    display: none;
+}
+
+/* General body styling to center everything */
+
+body {
+    background-image: url(background.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover; /* larger than the form */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: 'Merriweather', serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+/* Heading styling */
+
+h1 {
+    font-family: 'Merriweather', serif;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form styling */
+
+.file-upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background-color: transparent; /* Make sure it's transparent */
+    border-radius: 10px; 
+    box-shadow: none; /* Remove shadows if any */
+    padding: 0; /* Ensure no extra padding */
+}
+
+/* File upload label styling */
+
+.file-upload-label {
+    display: inline-block;
+    cursor: pointer;
+    padding: 20px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.file-upload-label:hover {
+    background-color: #e0f7fa;
+    border-color: #00838f;
+}
+
+.file-upload-design {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.file-upload-design svg {
+    color: #00796b;
+    margin-bottom: 10px;
+}
+
+.browse-button {
+    font-weight: bold;
+    color: #00796b;
+}
+
+.upload-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #00796b;
+    /* Primary button color */
+    border: none;
+    border-radius: 5px;
+    /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.upload-button:hover {
+    background-color: #004d40;
+    /* Darker shade on hover */
+    transform: scale(1.05);
+    /* Slightly enlarges the button */
+}
+
+.upload-button:active {
+    background-color: #00251a;
+    /* Even darker shade when clicked */
+    transform: scale(0.95);
+    /* Slightly shrinks on click for feedback */
+}
+
+input[type="file"] {
+    display: none;
+}
+
+/* Result styling */
+
+#result {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #00796b;
+    font-weight: bold; /* Bold text */
+}
+
+/* Responsive adjustments */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;  /* Adds padding on small devices */
+        background-image: none; /* Remove background image */
+        background-color: #f4f4f4; /* Fallback color */
+    }
+
+    .file-upload-label {
+        width: 90%;
+        padding: 15px;  /* Reduced padding for mobile */
+        font-size: 14px;  /* Adjust font size */
+    }
+
+    .upload-button {
+        padding: 12px 25px; /* Adjust padding for better mobile fit */
+        font-size: 14px; /* Slightly smaller font size for mobile */
+    }
+
+    h1 {
+        font-size: 1.5em; /* Adjust heading size */
+    }
+
+    /* Optional: Adjust the SVG size */
+    .file-upload-design svg {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-upload-form {
+        gap: 10px; /* Smaller gap between form elements */
+    }
+
+    .upload-button {
+        width: 100%; /* Ensure button takes full width on small screens */
+    }
+}
